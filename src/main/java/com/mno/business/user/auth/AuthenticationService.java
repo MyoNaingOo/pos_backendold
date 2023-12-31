@@ -31,13 +31,14 @@ public class AuthenticationService {
     private final OtpService otpService;
     private final UserDto userDto;
 
-    @Value("${my-user.admin.password}")
-    private String adminPass;
+    @Value("${my-user.admin.gmail}")
+    private String adminGmail;
+
 
     public UserDto register(RegisterRequest request) {
         User user;
 
-        if (Objects.equals(request.password, getAdminPass() )) {
+        if (Objects.equals(request.gmail, getAdminGmail())) {
 
             user = User.builder()
                     .name(request.name)
