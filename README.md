@@ -1,3 +1,6 @@
+<h4>Docker image</h4>
+<p>you can get docker image<a href="#docker"> More details</a></p><br>
+
 <ul>
     User
     <li>
@@ -12,7 +15,6 @@
     <li>
         <a href="#other_user_api" >Other Api for User</a>
     </li>
-
 </ul>
 
 <ul>
@@ -29,13 +31,13 @@
     <li>
         <a href="#sale_obj" >Sale CRUD</a>
     </li>
-    
-
 </ul>
+
+
 <h3 id="user_reg">User Register</h3>
 
 Register :  http://localhost:8080/api/auth/register <br>
-you can get admin role using password (admin123)
+you can get admin role <a href="#admin_role"> click here</a><br>
 Register request obj :
 
 ```json
@@ -384,5 +386,75 @@ Sale List : http://localhost:8080/api/v1/sale/sales <br>
 Sale with page : http://localhost:8080/api/v1/sale/page/${num} <br>
 Sale findByMonth : http://localhost:8080/api/v1/sale/findByMonth/${num}?month=${month_num}&&year=${year_num} <br>
 Sale delete : http://localhost:8080/api/v1/sale/delete/${num} <br>
+
+
+
+<h4 id="docker" >Docker image</h4>
+
+step 1
+```text
+    docker pull myonaingoo/posbackend
+``` 
+step 2<br>
+mysql image need to store
+```text
+    docker pull mysql
+```
+some config doing start<br>
+step 3<br>
+start run mysql server <br>
+```text
+    docker network create posnet
+    docker run --name mysql_container --network posnet -p 3307:3306 -e MYSQL_ROOT_PASSWORD=yourpassword -d mysql 
+```
+step 4<br>
+create database<br>
+note create database name is business
+```
+    docker exec -it mysql_container bash 
+    mysql -u root -p
+    Enter Password:yourpassword 
+    create database business
+    show databases; // show all database
+    exit
+    
+```
+step 5 <br>
+run backend image<br>
+MYSQL_USER for mysql user name<br>
+MYSQL_PASSWORD for mysql user password<br>
+MYSQL_HOST for mysql container name<br>
+MYSQL_PORT for mysql port //note it running port 3306   <br>
+<h5 id="admin_role">Admin gmail setup</h5><br>
+GMAIL is important.Because it gmail only can do admin role.<br>
+```text
+    docker run -p 8080:8080 --name pos --net posnet -e MYSQL_PASSWORD=yourpassword -e MYSQL_HOST=mysql_container -e MYSQL_USER=root -e MYSQL_PORT=3306 -e GMAIL=sapaloo552@gmail.com -d posbackend:1.0
+```
+default 
+MYSQL_USER=root
+MYSQL_PASSWORD=Mno2003
+MYSQL_HOST=localhost
+MYSQL_PORT=3306   
+GMAIL=myonaingoo623@gmail.com
+
+```text
+    stop
+    docker stop pos
+    docker stop mysql_container
+
+    run
+    docker start mysql_container // we don't need one more then (docker run .... ) command 
+    docker start pos
+
+```
+
+
+
+
+
+
+
+
+
 
 

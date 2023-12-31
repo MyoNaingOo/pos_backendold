@@ -25,7 +25,6 @@ public class OtpService {
         Random random = new Random();
         int otpCode = random.nextInt(100000, 999999);
         String mail_body = "your authentication code is :" + otpCode;
-        System.out.println(mail_body);
         gmailSender.sendmail(email,"Login Authentication otp",mail_body);
         Otp createOtp = Otp.builder()
                 .gmail(email)
