@@ -63,55 +63,6 @@ public class Configer {
     }
 
 
-
-
-    /*
-    *
-        http.cors(
-                AbstractHttpConfigurer::disable
-        );
-        http
-                .csrf(
-                        AbstractHttpConfigurer::disable
-                )
-                .authorizeHttpRequests(
-                        auth -> {
-                            try {
-                                auth
-                                        .requestMatchers(
-                                                "/api/check/gmailcheck",
-                                                "/api/product/**",
-                                                "/api/auth/**",
-                                                "/api/image/**",
-                                                "/api/otp/**"
-                                        ).permitAll()
-                                        .requestMatchers("/api/user/delete/**").hasAuthority(Role.ADMIN.name())
-                                        .requestMatchers("/**").fullyAuthenticated()
-                                        .anyRequest().authenticated()
-                                        .and()
-                                        .authenticationProvider(authenticationProvider)
-                                        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                                        .logout()
-                                        .logoutUrl("/api/logout")
-                                        .addLogoutHandler(logoutHandler)
-                                        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
-
-
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                )
-                .httpBasic(withDefaults());
-
-        return http.build();
-    }
-
-
-    *
-    *
-    * */
-
     @Bean
     public WebMvcConfigurer alloweconfigurer() {
 
