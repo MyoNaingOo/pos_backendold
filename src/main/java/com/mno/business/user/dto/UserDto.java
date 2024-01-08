@@ -25,6 +25,8 @@ public class UserDto {
     private String gmail;
     private String address;
     private Role role;
+    private Boolean nameNotAvailable;
+    private Boolean gmailNotAvailable;
 
     public UserDto mapper(User user) {
         return UserDto.builder()
@@ -60,4 +62,8 @@ public class UserDto {
         );
         return userDtos;
     }
+
+
+
+
 }

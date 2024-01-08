@@ -20,7 +20,6 @@ public class OtpController {
 
     @PostMapping("register")
     private OtpDtoResponse checkOtp(@RequestBody OtpDtoRequest otpDtoRequest){
-        System.out.printf(otpDtoRequest.toString());
         return otpService.registerByotp(otpDtoRequest);
     }
 

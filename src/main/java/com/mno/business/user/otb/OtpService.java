@@ -24,8 +24,13 @@ public class OtpService {
     public void sendOtp(String email, String token) {
         Random random = new Random();
         int otpCode = random.nextInt(100000, 999999);
-        String mail_body = "your authentication code is :" + otpCode;
-        gmailSender.sendmail(email,"Login Authentication otp",mail_body);
+        String mail_body = "Hi "+ email +
+                "\n"+"your authentication code is :" + otpCode;
+        System.out.println(mail_body);
+
+//        gmailSender.sendmail(email,"Login Authentication otp",mail_body);
+
+
         Otp createOtp = Otp.builder()
                 .gmail(email)
                 .token(token)
@@ -76,13 +81,12 @@ public class OtpService {
 
     public OtpDtoResponse registerByotp(OtpDtoRequest otpDtoRequest) {
         Otp otp = findByOtp(otpDtoRequest.getOtp()).orElse(null);
-        otpRepo.deleteAllByGmail(otpDtoRequest.getGmail());
         User user = userService.userfindByGmail(otpDtoRequest.getGmail());
         OtpDtoResponse otpDtoResponse;
 
         if (otp != null) {
             otpRepo.delete(otp);
-
+            otpRepo.deleteAllByGmail(otpDtoRequest.getGmail());
             if (otpDtoRequest.getGmail().equals(otp.getGmail())) {
 
                 otpDtoResponse = OtpDtoResponse.builder()
@@ -115,6 +119,9 @@ public class OtpService {
                     .massage("email or otp is fail")
                     .build();
         }
+
+
+
 
     }
 }

@@ -36,17 +36,35 @@ public class AuthenticationService {
 
 
     public UserDto register(RegisterRequest request) {
-        User user;
+        User user = userRepo.findByNameOrGmail(request.name, request.gmail).orElse(null);
+
+        if (user == null) {
+            return createUser(request);
+        } else {
+
+            if (user.getName().equals(request.name)) {
+
+                if (user.getGmail().equals(request.gmail)) {
+
+                    return UserDto.builder().gmailNotAvailable(true).nameNotAvailable(true).build();
+                } else {
+                    return UserDto.builder().nameNotAvailable(true).build();
+                }
+            } else if (user.getGmail().equals(request.gmail)) {
+
+                return UserDto.builder().gmailNotAvailable(true).build();
+            }
+
+        }
+        return null;
+    }
+
+
+    private UserDto createUser(RegisterRequest request) {
 
         if (Objects.equals(request.gmail, getAdminGmail())) {
 
-            user = User.builder()
-                    .name(request.name)
-                    .gmail(request.gmail)
-                    .address(request.address)
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .role(Role.ADMIN)
-                    .build();
+            User user = User.builder().name(request.name).gmail(request.gmail).address(request.address).password(passwordEncoder.encode(request.getPassword())).role(Role.ADMIN).build();
             var savedUser = userRepo.save(user);
             var jwtToken = jwtService.generateToken(user);
             saveUserToken(savedUser, jwtToken);
@@ -55,35 +73,20 @@ public class AuthenticationService {
 
         } else {
 
-            user = User.builder()
-                    .name(request.name)
-                    .gmail(request.gmail)
-                    .address(request.address)
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .role(Role.USER)
-                    .build();
+            User user = User.builder().name(request.name).gmail(request.gmail).address(request.address).password(passwordEncoder.encode(request.getPassword())).role(Role.USER).build();
             var savedUser = userRepo.save(user);
             var jwtToken = jwtService.generateToken(user);
-
-            System.out.printf(jwtToken);
-
             saveUserToken(savedUser, jwtToken);
             otpService.sendOtp(request.getGmail(), jwtToken);
             return userDto.mapper(savedUser);
         }
 
-
     }
 
+
     public UserDto authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getGmail(),
-                        request.getPassword()
-                )
-        );
-        var user = userRepo.findByGmail(request.getGmail())
-                .orElseThrow();
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getGmail(), request.getPassword()));
+        var user = userRepo.findByGmail(request.getGmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         removeAllTokenByUser(user);
         saveUserToken(user, jwtToken);
@@ -106,13 +109,7 @@ public class AuthenticationService {
     }
 
     public void saveUserToken(User user, String jwtToken) {
-        var token = Token.builder()
-                .user(user)
-                .token(jwtToken)
-                .tokenType(TokenType.BEARER)
-                .expired(false)
-                .revoked(false)
-                .build();
+        var token = Token.builder().user(user).token(jwtToken).tokenType(TokenType.BEARER).expired(false).revoked(false).build();
         tokenRepository.save(token);
     }
 
