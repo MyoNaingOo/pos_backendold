@@ -427,6 +427,7 @@ MYSQL_HOST for mysql container name<br>
 MYSQL_PORT for mysql port //note it running port 3306   <br>
 <h5 id="admin_role">Admin gmail setup</h5><br>
 GMAIL is important.Because it gmail only can do admin role.<br>
+
 ```text
     docker run -p 8080:8080 --name pos --net posnet -e MYSQL_PASSWORD=yourpassword -e MYSQL_HOST=mysql_container -e MYSQL_USER=root -e MYSQL_PORT=3306 -e GMAIL=sapaloo552@gmail.com -d posbackend:1.0
 ```
