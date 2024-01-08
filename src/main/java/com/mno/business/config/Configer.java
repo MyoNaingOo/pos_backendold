@@ -35,6 +35,47 @@ public class Configer {
                 )
                 .authorizeHttpRequests(
                         auth -> {
+                            auth
+                                    .requestMatchers(
+                                            "/api/product/**",
+                                            "/api/auth/**",
+                                            "/api/image/**",
+                                            "/api/otp/**"
+                                    ).permitAll()
+                                    .requestMatchers("/api/v1/user/delete/**").hasAuthority(Role.ADMIN.name())
+                                    .requestMatchers("/**").fullyAuthenticated()
+                                    .anyRequest().authenticated();
+
+                        }
+                )
+                .httpBasic(withDefaults())
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout(
+                        logout -> logout.logoutUrl("/api/logout")
+                                .addLogoutHandler(logoutHandler)
+                                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
+
+                );
+
+
+        return http.build();
+    }
+
+
+
+
+    /*
+    *
+        http.cors(
+                AbstractHttpConfigurer::disable
+        );
+        http
+                .csrf(
+                        AbstractHttpConfigurer::disable
+                )
+                .authorizeHttpRequests(
+                        auth -> {
                             try {
                                 auth
                                         .requestMatchers(
@@ -67,6 +108,10 @@ public class Configer {
     }
 
 
+    *
+    *
+    * */
+
     @Bean
     public WebMvcConfigurer alloweconfigurer() {
 
@@ -74,7 +119,7 @@ public class Configer {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:4200/", "http://localhost:3000/","http://localhost:8080/","http://localhost:5173/")
+                        .allowedOrigins("http://localhost:4200/", "http://localhost:3000/", "http://localhost:8080/", "http://localhost:5173/")
                         .allowedMethods("GET", "POST", "PUT", "DELETE");
             }
         };
