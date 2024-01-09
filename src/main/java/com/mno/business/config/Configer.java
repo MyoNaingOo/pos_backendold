@@ -42,6 +42,7 @@ public class Configer {
                                             "/api/image/**",
                                             "/api/otp/**"
                                     ).permitAll()
+                                    .requestMatchers("/api/v1/user/delete").authenticated()
                                     .requestMatchers("/api/v1/user/delete/**").hasAuthority(Role.ADMIN.name())
                                     .requestMatchers("/**").fullyAuthenticated()
                                     .anyRequest().authenticated();

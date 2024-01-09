@@ -59,6 +59,21 @@ Login    : http://localhost:8080/api/auth/authenticate
   "password": ""
 }
 ```
+register response data <br>
+true is already have been. false is available 
+
+```json
+{
+  "id": 1,
+  "name": "**",
+  "user_img": null,
+  "gmail": "***@gmail",
+  "address": "**",
+  "role": "ADMIN",
+  "nameNotAvailable" : true,
+  "nameNotAvailable" : false
+}
+```
 
 Login Otp: http://localhost:8080/api/otp/authenticate
 <br>Login request obj :
@@ -393,7 +408,7 @@ Sale delete : http://localhost:8080/api/v1/sale/delete/${num} <br>
 
 step 1
 ```text
-    docker pull myonaingoo/posbackend
+    docker pull myonaingoo/posbackend:1.5
 ``` 
 step 2<br>
 mysql image need to store
@@ -429,13 +444,13 @@ MYSQL_PORT for mysql port //note it running port 3306   <br>
 GMAIL is important.Because it gmail only can do admin role.<br>
 
 ```text
-    docker run -p 8080:8080 --name pos --net posnet -e MYSQL_PASSWORD=yourpassword -e MYSQL_HOST=mysql_container -e MYSQL_USER=root -e MYSQL_PORT=3306 -e GMAIL=sapaloo552@gmail.com -d posbackend:1.0
+    docker run -p 8080:8080 --name pos --net posnet -e MYSQL_PASSWORD=yourpassword -e MYSQL_HOST=mysql_container -e MYSQL_USER=root -e MYSQL_PORT=3306 -e GMAIL=sapaloo552@gmail.com -d posbackend:1.5
 ```
-default 
-MYSQL_USER=root
-MYSQL_PASSWORD=Mno2003
-MYSQL_HOST=localhost
-MYSQL_PORT=3306   
+default <br>
+MYSQL_USER=root <br>
+MYSQL_PASSWORD=Mno2003 <br>
+MYSQL_HOST=localhost <br>
+MYSQL_PORT=3306  <br>
 GMAIL=myonaingoo623@gmail.com
 
 ```text
