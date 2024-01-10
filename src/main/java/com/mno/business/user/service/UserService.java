@@ -4,6 +4,7 @@ import com.mno.business.Store.Repo.StoreRepo;
 import com.mno.business.image.ImageService;
 import com.mno.business.product.Repo.ProductRepo;
 import com.mno.business.sale.Repo.SaleRepo;
+import com.mno.business.user.dto.UserDto;
 import com.mno.business.user.entity.User;
 import com.mno.business.user.otb.OtpRepo;
 import com.mno.business.user.repo.TokenRepo;
@@ -16,6 +17,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +33,47 @@ public class UserService {
     private final TokenRepo tokenRepo;
     private final OtpRepo otpRepo;
     private final ImageService imageService;
+
+
+
+    public UserDto mapper(User user) {
+        return UserDto.builder()
+                .id(user.getId())
+                .user_img(user.getUser_img())
+                .gmail(user.getGmail())
+                .name(user.getName())
+                .address(user.getAddress())
+                .role(user.getRole())
+                .build();
+
+    }
+
+    public User responeUser(User user) {
+        return User.builder()
+                .id(user.getId())
+                .user_img(user.getUser_img())
+                .gmail(user.getGmail())
+                .name(user.getName())
+                .address(user.getAddress())
+                .role(user.getRole())
+                .build();
+
+    }
+
+    public List<UserDto> ListMapper(List<User> users) {
+        List<UserDto> userDtos = new ArrayList<UserDto>();
+        users.forEach(
+                user -> {
+                    UserDto userDto = mapper(user);
+                    userDtos.add(userDto);
+                }
+        );
+        return userDtos;
+    }
+
+
+
+
     public void addNewUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);

@@ -47,21 +47,22 @@ public class SaleControl {
                 .time(LocalDateTime.now())
                 .build();
         saleSer.add(sale);
+
     }
 
     @GetMapping("sales")
-    private List<Sale> saleList() {
-        return saleSer.sales();
+    private List<SaleDto> saleList() {
+        return saleSer.resSaleDtos(saleSer.sales());
     }
 
     @GetMapping("findByMonth/{num}")
-    private List<Sale> findByMonth(@RequestParam("month") int month, @RequestParam("year") int year, @PathVariable("num") int num) {
-        return saleSer.findByMonth(month, year, num);
+    private List<SaleDto> findByMonth(@RequestParam("month") int month, @RequestParam("year") int year, @PathVariable("num") int num) {
+        return saleSer.resSaleDtos(saleSer.findByMonth(month, year, num));
     }
 
     @GetMapping("page/{num}")
-    private List<Sale> sales(@PathVariable("num") int num) {
-        return saleSer.sales(num);
+    private List<SaleDto> sales(@PathVariable("num") int num) {
+        return saleSer.resSaleDtos(saleSer.sales(num));
     }
 
     @DeleteMapping("delete/{id}")

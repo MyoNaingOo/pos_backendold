@@ -88,7 +88,7 @@ public class OtpService {
 
                 otpDtoResponse = OtpDtoResponse.builder()
                         .gmail(otpDtoRequest.getGmail())
-                        .user(user)
+                        .user(userService.responeUser(user))
                         .token(otp.getToken())
                         .checkotp(true)
                         .logined(true)

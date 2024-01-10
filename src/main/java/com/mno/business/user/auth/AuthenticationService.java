@@ -9,6 +9,7 @@ import com.mno.business.user.entity.User;
 import com.mno.business.user.otb.OtpService;
 import com.mno.business.user.repo.TokenRepo;
 import com.mno.business.user.repo.UserRepo;
+import com.mno.business.user.service.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +30,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final OtpService otpService;
-    private final UserDto userDto;
+    private final UserService userService;
 
     @Value("${my-user.admin.gmail}")
     private String adminGmail;
@@ -69,7 +70,7 @@ public class AuthenticationService {
             var jwtToken = jwtService.generateToken(user);
             saveUserToken(savedUser, jwtToken);
             otpService.sendOtp(request.getGmail(), jwtToken);
-            return userDto.mapper(savedUser);
+            return userService.mapper(savedUser);
 
         } else {
 
@@ -78,7 +79,7 @@ public class AuthenticationService {
             var jwtToken = jwtService.generateToken(user);
             saveUserToken(savedUser, jwtToken);
             otpService.sendOtp(request.getGmail(), jwtToken);
-            return userDto.mapper(savedUser);
+            return userService.mapper(savedUser);
         }
 
     }
@@ -91,7 +92,7 @@ public class AuthenticationService {
         removeAllTokenByUser(user);
         saveUserToken(user, jwtToken);
         otpService.sendOtp(request.getGmail(), jwtToken);
-        return userDto.mapper(user);
+        return userService.mapper(user);
 
     }
 
@@ -100,11 +101,12 @@ public class AuthenticationService {
         User user = userRepo.findByGmail(request.getGmail()).orElse(null);
 
         var jwtToken = jwtService.generateToken(user);
+        assert user != null;
         removeAllTokenByUser(user);
         saveUserToken(user, jwtToken);
         otpService.sendOtp(request.getGmail(), jwtToken);
 
-        return userDto.mapper(user);
+        return userService.mapper(user);
 
     }
 

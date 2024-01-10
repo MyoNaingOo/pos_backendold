@@ -29,7 +29,7 @@ public class StoreControl {
     private void addStore(@RequestBody StoreDto storeDto, HttpServletRequest request) {
 
         User user = jwtService.getuser(request);
-        Product product = productRepo.findById(storeDto.getProduct()).orElse(null);
+        Product product = productRepo.findById(storeDto.getProduct_id()).orElse(null);
         Store store = Store.builder()
                 .product(product)
                 .user(user)
@@ -41,43 +41,44 @@ public class StoreControl {
     }
 
     @GetMapping("stores")
-    private List<Store> stores() {
-        return storeSer.storeListAll();
+    private List<StoreDto> stores() {
+        return storeSer.resStoreDtos(storeSer.storeListAll());
     }
 
     @GetMapping("page/{num}")
-    private List<Store> page(@PathVariable("num") int id) {
-        return storeSer.storeList(id);
+    private List<StoreDto> page(@PathVariable("num") int id) {
+        return storeSer.resStoreDtos(storeSer.storeList(id));
     }
 
     @GetMapping("prosBalance/{num}")
-    public List<Store> getProductsBalance(@PathVariable("num") int num) {
-        return storeSer.getProductsBalance(num);
+    public List<StoreDto> getProductsBalance(@PathVariable("num") int num) {
+        return storeSer.resStoreDtos(storeSer.getProductsBalance(num));
     }
 
     @GetMapping("sold/{num}")
-    public List<Store> getProductsSold(@PathVariable("num") int num) {
-        return storeSer.getProductsSold(num);
+    public List<StoreDto> getProductsSold(@PathVariable("num") int num) {
+        return storeSer.resStoreDtos(storeSer.getProductsSold(num));
     }
 
 
     @GetMapping("findAllByMonth/{num}")
-    private List<Store> getByMonth(
+    private List<StoreDto> getByMonth(
             @RequestParam("month") int month,
             @RequestParam("year") int year,
             @PathVariable("num") int num) {
-        return storeSer.findByMonthAndYear(month, year, num);
+
+        return storeSer.resStoreDtos(storeSer.findByMonthAndYear(month, year, num));
     }
 
 
     @GetMapping("findAllByProduct/{num}")
-    private List<Store> getAllByProduct(@PathVariable("num") int num, @RequestParam("product_id") Long product_id) {
-        return storeSer.findAllByProduct(product_id, num);
+    private List<StoreDto> getAllByProduct(@PathVariable("num") int num, @RequestParam("product_id") Long product_id) {
+        return storeSer.resStoreDtos(storeSer.findAllByProduct(product_id, num));
     }
 
     @GetMapping("findAllByUser/{num}")
-    public List<Store> findAllByUser(@RequestParam("user_id") Long user_id, @PathVariable("num") int num) {
-        return storeSer.findAllByUser(user_id, num);
+    public List<StoreDto> findAllByUser(@RequestParam("user_id") Long user_id, @PathVariable("num") int num) {
+        return storeSer.resStoreDtos(storeSer.findAllByUser(user_id, num));
     }
 
     @DeleteMapping("delete/{id}")

@@ -1,6 +1,7 @@
 package com.mno.business.product.service;
 
 
+import com.mno.business.Store.Repo.StoreRepo;
 import com.mno.business.Store.service.StoreSer;
 import com.mno.business.image.ImageService;
 import com.mno.business.product.Prices.ProPrice;
@@ -9,6 +10,7 @@ import com.mno.business.product.Repo.ProductRepo;
 import com.mno.business.product.dto.ProductDto;
 import com.mno.business.product.entity.Product;
 import com.mno.business.user.dto.UserDto;
+import com.mno.business.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,25 +26,28 @@ import java.util.List;
 public class ProductSer {
 
     private final ProductRepo productRepo;
-    private final StoreSer storeSer;
+    private final StoreRepo storeRepo;
+
     private final ProPriceSer proPriceSer;
-    private final UserDto userDto;
+    private final UserService userService;
     private final ImageService imageService;
 
 
     public ProductDto changeProDto(Product product) {
-        int balance = storeSer.getProductBalance(product.getId());
+        int balance = storeRepo.getProBalance(product.getId()).orElse(0);
+
         ProPrice price = proPriceSer.LtsProPrice(product.getId());
         return ProductDto.builder()
                 .id(product.getId())
                 .img(product.getImg())
                 .name(product.getName())
-                .user(userDto.responeUser(product.getUser()))
+                .user(userService.responeUser(product.getUser()))
                 .description(product.getDescription())
                 .balance(balance)
                 .price(price)
                 .build();
     }
+
 
 
     public List<ProductDto> changeListProDto(List<Product> products) {

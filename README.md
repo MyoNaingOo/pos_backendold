@@ -330,7 +330,7 @@ request obj:
 
 ```json
 {
-  "product": 1,
+  "product_id": 1,
   "bulk": 300
 }
 ```

@@ -19,7 +19,6 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
-    private final UserDto userDto;
 
 
     @DeleteMapping("delete")
@@ -36,34 +35,34 @@ public class UserController {
     @GetMapping("users/page/{num}")
     public List<UserDto> getusers(@PathVariable("num") int num) {
         List<User> users = userService.getUsers(num);
-        return userDto.ListMapper(users);
+        return userService.ListMapper(users);
     }
 
     @GetMapping("userid/{id}")
     public UserDto getUser(@PathVariable("id") Long id) {
         User user = userService.getUser(id).orElse(null);
         assert user != null;
-        return userDto.mapper(user);
+        return userService.mapper(user);
 
     }
 
     @GetMapping("username/{name}")
     public UserDto getUsername(@PathVariable("name") String name) {
         User user = userService.userfindByName(name);
-        return userDto.mapper(user);
+        return userService.mapper(user);
     }
 
     @GetMapping("usergmaill/{gmail}")
     public UserDto getUserEmail(@PathVariable("email") String gmail) {
         User user = userService.userfindByGmail(gmail);
-        return userDto.mapper(user);
+        return userService.mapper(user);
 
     }
 
     @GetMapping("user")
     private UserDto getUserByOwner(HttpServletRequest request) {
         User user = jwtService.getuser(request);
-        return userDto.mapper(user);
+        return userService.mapper(user);
     }
 
     @PostMapping("image")
