@@ -407,8 +407,11 @@ Sale delete : http://localhost:8080/api/v1/sale/delete/${num} <br>
 <h4 id="docker" >Docker image</h4>
 
 step 1
+
+check tag version <a href="https://hub.docker.com/r/myonaingoo/posbackend/tags" >More details</a>
+
 ```text
-    docker pull myonaingoo/posbackend:1.5
+    docker pull myonaingoo/posbackend:1.7
 ``` 
 step 2<br>
 mysql image need to store
@@ -444,7 +447,7 @@ MYSQL_PORT for mysql port //note it running port 3306   <br>
 GMAIL is important.Because it gmail only can do admin role.<br>
 
 ```text
-    docker run -p 8080:8080 --name pos --net posnet -e MYSQL_PASSWORD=yourpassword -e MYSQL_HOST=mysql_container -e MYSQL_USER=root -e MYSQL_PORT=3306 -e GMAIL=sapaloo552@gmail.com -d posbackend:1.5
+    docker run -p 8080:8080 --name pos --net posnet -e MYSQL_PASSWORD=yourpassword -e MYSQL_HOST=mysql_container -e MYSQL_USER=root -e MYSQL_PORT=3306 -e GMAIL=sapaloo552@gmail.com -d posbackend:1.7
 ```
 default <br>
 MYSQL_USER=root <br>
