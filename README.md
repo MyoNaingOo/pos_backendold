@@ -80,6 +80,17 @@ Login Otp: http://localhost:8080/api/otp/authenticate
 
 Login Otp: http://localhost:8080/api/auth/forGetPass
 
+
+
+Register Otp: http://localhost:8080/api/otp/register
+Login Otp: http://localhost:8080/api/otp/authenticate
+Login request obj :
+
+{
+  "gmail": "**@gmail",
+  "otp": 123456
+}
+
 <h3 id="otp">Login and Register Otp </h3>
 Otp response obj
 
