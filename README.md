@@ -50,6 +50,14 @@ Register request obj :
 
 Reg Otp  : http://localhost:8080/api/otp/register<br>
 
+```json
+{
+  "gmail": "**@gmail",
+  "otp": 123456
+}
+
+```
+
 <h3 id="user_login">User Login</h3>
 Login    : http://localhost:8080/api/auth/authenticate
 
@@ -75,14 +83,6 @@ true is already have been. false is available
 }
 ```
 
-Login Otp: http://localhost:8080/api/otp/authenticate
-<br>Login request obj :
-
-Login Otp: http://localhost:8080/api/auth/forGetPass
-
-
-
-Register Otp: http://localhost:8080/api/otp/register
 Login Otp: http://localhost:8080/api/otp/authenticate
 Login request obj :
 
